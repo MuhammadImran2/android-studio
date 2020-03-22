@@ -1,0 +1,32 @@
+name: Snap build CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Remove LXD (apt)
+      run: sudo apt purge lxd* -y
+
+    - name: Install LXD snap
+      run: sudo snap install lxd
+
+    - name: Setup LXD
+      run: sudo /snap/bin/lxd init --auto
+
+    - name: Install Snapcraft
+      run: sudo snap install snapcraft --classic
+
+    - name: Build snap package
+      run: sudo snapcraft --use-lxd
+
+    - name: Install the newly built
+      run: sudo snap install *.snap --dangerous
+
