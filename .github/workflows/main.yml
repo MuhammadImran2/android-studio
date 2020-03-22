@@ -18,6 +18,9 @@ jobs:
     - name: Install LXD snap
       run: sudo snap install lxd
 
+    - name: Wait for LXD ready
+      run: sudo /snap/bin/lxd waitready
+
     - name: Setup LXD
       run: sudo /snap/bin/lxd init --auto
 
